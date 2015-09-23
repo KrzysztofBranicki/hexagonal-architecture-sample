@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\StopWatchScope.cs" />
+    <Compile Include="Logging\ColorConsoleLogger.cs" />
+    <Compile Include="Logging\CompositeLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querying\GridSearchCriteria.cs" />
     <Compile Include="Querying\IPageCriteria.cs" />
