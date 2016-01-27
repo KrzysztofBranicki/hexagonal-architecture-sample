@@ -50,7 +50,6 @@ namespace Common.Domain.Tests.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(EntityNotFountException))]
         public void Deleted_entity_should_be_removed_form_repository()
         {
             var id = Guid.NewGuid();
@@ -61,7 +60,8 @@ namespace Common.Domain.Tests.Repositories
             Assert.That(retrievedEntity, Is.Not.Null);
 
             repository.Delete(id);
-            repository.Get(id);
+
+            Assert.That(() => repository.Get(id), Throws.InstanceOf<EntityNotFountException>());
         }
 
         [Test]
