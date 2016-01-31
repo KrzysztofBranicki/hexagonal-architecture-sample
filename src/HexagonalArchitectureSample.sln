@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{51167E4D-99CB-422E-B3BB-1DB9FE8F9C39}"
 EndProject
@@ -14,6 +14,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain.Tests", "Common.Domain.Tests\Common.Domain.Tests.csproj", "{31551C79-A220-41D3-83D2-81214D4A84AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Application", "Common.Application\Common.Application.csproj", "{105C4358-5AD0-4C8C-975B-9F53B358FB89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2F2568B0-A15A-4EA1-9DFB-94A6537852B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{45086430-2CEE-433A-9A7A-533B000DED59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{B76B083E-069A-4F1E-8E0A-3B16845DCA17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persistence.Redis", "Common.Infrastructure.Persistence.Redis\Common.Infrastructure.Persistence.Redis.csproj", "{FD3462ED-C068-4EBB-8BC1-428F3980543A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +49,10 @@ Global
 		{105C4358-5AD0-4C8C-975B-9F53B358FB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{105C4358-5AD0-4C8C-975B-9F53B358FB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{105C4358-5AD0-4C8C-975B-9F53B358FB89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD3462ED-C068-4EBB-8BC1-428F3980543A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD3462ED-C068-4EBB-8BC1-428F3980543A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD3462ED-C068-4EBB-8BC1-428F3980543A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD3462ED-C068-4EBB-8BC1-428F3980543A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,5 +63,9 @@ Global
 		{EE03AECF-4265-415D-A6EC-3A3466E5D459} = {51167E4D-99CB-422E-B3BB-1DB9FE8F9C39}
 		{31551C79-A220-41D3-83D2-81214D4A84AF} = {51167E4D-99CB-422E-B3BB-1DB9FE8F9C39}
 		{105C4358-5AD0-4C8C-975B-9F53B358FB89} = {51167E4D-99CB-422E-B3BB-1DB9FE8F9C39}
+		{2F2568B0-A15A-4EA1-9DFB-94A6537852B1} = {51167E4D-99CB-422E-B3BB-1DB9FE8F9C39}
+		{45086430-2CEE-433A-9A7A-533B000DED59} = {2F2568B0-A15A-4EA1-9DFB-94A6537852B1}
+		{B76B083E-069A-4F1E-8E0A-3B16845DCA17} = {2F2568B0-A15A-4EA1-9DFB-94A6537852B1}
+		{FD3462ED-C068-4EBB-8BC1-428F3980543A} = {45086430-2CEE-433A-9A7A-533B000DED59}
 	EndGlobalSection
 EndGlobal

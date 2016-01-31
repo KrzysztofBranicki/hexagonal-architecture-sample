@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Domain.Repositories;
+using Common.Domain.Repositories.Exceptions;
 using NUnit.Framework;
 
 namespace Common.Domain.Tests.Repositories

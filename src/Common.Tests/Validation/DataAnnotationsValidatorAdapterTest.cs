@@ -13,7 +13,6 @@ namespace Common.Tests.Validation
         private readonly ClassToValidate _invalidObject = new ClassToValidate();
 
         [Test]
-        //[ExpectedException(typeof())]
         public void Assert_is_valid_should_throw_validation_exception_when_object_is_invalid()
         {
             Assert.That(() => _validator.AssertIsValid(_invalidObject), Throws.InstanceOf<ValidationException>());

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Domain.Repositories
+namespace Common.Domain.Repositories.Exceptions
 {
     [Serializable]
     public class EntityNotFountException : Exception

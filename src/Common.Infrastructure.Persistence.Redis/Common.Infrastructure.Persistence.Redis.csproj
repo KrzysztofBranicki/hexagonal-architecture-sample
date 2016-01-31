@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE03AECF-4265-415D-A6EC-3A3466E5D459}</ProjectGuid>
+    <ProjectGuid>{FD3462ED-C068-4EBB-8BC1-428F3980543A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common.Domain</RootNamespace>
-    <AssemblyName>Common.Domain</AssemblyName>
+    <RootNamespace>Common.Infrastructure.Persistence.Redis</RootNamespace>
+    <AssemblyName>Common.Infrastructure.Persistence.Redis</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,24 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditData.cs" />
-    <Compile Include="DomainInvariantViolatedException.cs" />
-    <Compile Include="Events\EventBroker.cs" />
-    <Compile Include="Events\IEventHandler.cs" />
-    <Compile Include="Events\IEventPublisher.cs" />
-    <Compile Include="Events\IEventSubscriber.cs" />
-    <Compile Include="IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\Exceptions\EntityAddFailedException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityNotFountException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityDeleteFailedException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityUpdateFailedException.cs" />
-    <Compile Include="Repositories\IAsyncRepository.cs" />
-    <Compile Include="Repositories\InMemoryRepository.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\RedisJsonRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Domain\Common.Domain.csproj">
+      <Project>{ee03aecf-4265-415d-a6ec-3a3466e5d459}</Project>
+      <Name>Common.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
