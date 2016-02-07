@@ -55,7 +55,9 @@
     <Compile Include="Repositories\Exceptions\EntityDeleteFailedException.cs" />
     <Compile Include="Repositories\Exceptions\EntityUpdateFailedException.cs" />
     <Compile Include="Repositories\IAsyncRepository.cs" />
-    <Compile Include="Repositories\InMemoryRepository.cs" />
+    <Compile Include="Repositories\InMemory\AsyncRepositoryInMemoryCachingDecorator.cs" />
+    <Compile Include="Repositories\InMemory\InMemoryRepository.cs" />
+    <Compile Include="Repositories\InMemory\RepositoryInMemoryCachingDecorator.cs" />
     <Compile Include="Repositories\IRepository.cs" />
   </ItemGroup>
   <ItemGroup />

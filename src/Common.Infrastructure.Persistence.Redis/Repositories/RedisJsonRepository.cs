@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Common.Domain;
 using Common.Domain.Repositories;
 using Common.Domain.Repositories.Exceptions;
@@ -8,17 +9,15 @@ using StackExchange.Redis;
 
 namespace Common.Infrastructure.Persistence.Redis.Repositories
 {
-    public class RedisJsonRepository<TEntity, TId> : IRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class RedisJsonRepository<TEntity, TId> : IRepository<TEntity, TId>, IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
-        protected readonly ConnectionMultiplexer ConnectionMultiplexer;
+        private static readonly string EntityName = typeof(TEntity).FullName;
+
         protected IDatabase Db;
-
-        private static readonly string EntityName = typeof (TEntity).FullName;
-
+        
         public RedisJsonRepository(ConnectionMultiplexer connectionMultiplexer)
         {
-            ConnectionMultiplexer = connectionMultiplexer;
-            Db = ConnectionMultiplexer.GetDatabase();
+            Db = connectionMultiplexer.GetDatabase();
         }
 
         public void Add(TEntity entity)
@@ -87,6 +86,75 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
         {
             foreach (var id in ids)
                 Delete(id);
+        }
+        
+
+        public async Task AddAsync(TEntity entity)
+        {
+            var added = await Db.StringSetAsync(CreateKeyFromId(entity.Id), SerializeEntity(entity));
+            if (!added)
+                throw new EntityAddFailedException(entity.Id);
+        }
+
+        public Task AddAsync(IEnumerable<TEntity> entities)
+        {
+            var tasks = entities.Select(AddAsync);
+            return Task.WhenAll(tasks);
+        }
+
+        public async Task<TEntity> GetAsync(TId id)
+        {
+            var entity = await GetEntityOrDefaultAsync(id);
+            if (entity == null)
+                throw new EntityNotFountException(id);
+
+            return entity;
+        }
+
+        public async Task<TEntity> GetEntityOrDefaultAsync(TId id)
+        {
+            var redisValue = await Db.StringGetAsync(CreateKeyFromId(id));
+            if (!redisValue.HasValue)
+                return default(TEntity);
+
+            return DeserializeEntity(redisValue);
+        }
+
+        public async Task UpdateAsync(TEntity entity)
+        {
+            var updated = await Db.StringSetAsync(CreateKeyFromId(entity.Id), SerializeEntity(entity));
+            if (!updated)
+                throw new EntityUpdateFailedException(entity.Id);
+        }
+
+        public Task UpdateAsync(IEnumerable<TEntity> entities)
+        {
+            var tasks = entities.Select(UpdateAsync);
+            return Task.WhenAll(tasks);
+        }
+
+        public Task DeleteAsync(TEntity entity)
+        {
+            return DeleteAsync(entity.Id);
+        }
+
+        public Task DeleteAsync(IEnumerable<TEntity> entities)
+        {
+            var tasks = entities.Select(DeleteAsync);
+            return Task.WhenAll(tasks);
+        }
+
+        public async Task DeleteAsync(TId id)
+        {
+            var deleted = await Db.KeyDeleteAsync(CreateKeyFromId(id));
+            if (!deleted)
+                throw new EntityDeleteFailedException(id);
+        }
+
+        public Task DeleteAsync(IEnumerable<TId> ids)
+        {
+            var tasks = ids.Select(DeleteAsync);
+            return Task.WhenAll(tasks);
         }
 
         protected virtual string CreateKeyFromId(TId id)
