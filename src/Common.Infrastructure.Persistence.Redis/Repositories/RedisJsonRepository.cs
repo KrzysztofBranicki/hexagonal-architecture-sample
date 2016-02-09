@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Common.Domain;
 using Common.Domain.Repositories;
 using Common.Domain.Repositories.Exceptions;
@@ -14,7 +12,7 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
         private static readonly string EntityName = typeof(TEntity).FullName;
 
         protected IDatabase Db;
-        
+
         public RedisJsonRepository(ConnectionMultiplexer connectionMultiplexer)
         {
             Db = connectionMultiplexer.GetDatabase();
@@ -23,20 +21,14 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
         public void Add(TEntity entity)
         {
             var added = Db.StringSet(CreateKeyFromId(entity.Id), SerializeEntity(entity));
-            if(!added)
+            if (!added)
                 throw new EntityAddFailedException(entity.Id);
-        }
-        
-        public void Add(IEnumerable<TEntity> entities)
-        {
-            foreach (var entity in entities)
-                Add(entity);
         }
 
         public TEntity Get(TId id)
         {
             var entity = GetEntityOrDefault(id);
-            if(entity == null)
+            if (entity == null)
                 throw new EntityNotFountException(id);
 
             return entity;
@@ -54,14 +46,8 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
         public void Update(TEntity entity)
         {
             var updated = Db.StringSet(CreateKeyFromId(entity.Id), SerializeEntity(entity));
-            if(!updated)
+            if (!updated)
                 throw new EntityUpdateFailedException(entity.Id);
-        }
-
-        public void Update(IEnumerable<TEntity> entities)
-        {
-            foreach (var entity in entities)
-                Update(entity);
         }
 
         public void Delete(TEntity entity)
@@ -69,37 +55,19 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
             Delete(entity.Id);
         }
 
-        public void Delete(IEnumerable<TEntity> entities)
-        {
-            foreach (var entity in entities)
-                Delete(entity);
-        }
-
         public void Delete(TId id)
         {
             var deleted = Db.KeyDelete(CreateKeyFromId(id));
-            if(!deleted)
+            if (!deleted)
                 throw new EntityDeleteFailedException(id);
         }
 
-        public void Delete(IEnumerable<TId> ids)
-        {
-            foreach (var id in ids)
-                Delete(id);
-        }
-        
 
         public async Task AddAsync(TEntity entity)
         {
             var added = await Db.StringSetAsync(CreateKeyFromId(entity.Id), SerializeEntity(entity));
             if (!added)
                 throw new EntityAddFailedException(entity.Id);
-        }
-
-        public Task AddAsync(IEnumerable<TEntity> entities)
-        {
-            var tasks = entities.Select(AddAsync);
-            return Task.WhenAll(tasks);
         }
 
         public async Task<TEntity> GetAsync(TId id)
@@ -127,21 +95,9 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
                 throw new EntityUpdateFailedException(entity.Id);
         }
 
-        public Task UpdateAsync(IEnumerable<TEntity> entities)
-        {
-            var tasks = entities.Select(UpdateAsync);
-            return Task.WhenAll(tasks);
-        }
-
         public Task DeleteAsync(TEntity entity)
         {
             return DeleteAsync(entity.Id);
-        }
-
-        public Task DeleteAsync(IEnumerable<TEntity> entities)
-        {
-            var tasks = entities.Select(DeleteAsync);
-            return Task.WhenAll(tasks);
         }
 
         public async Task DeleteAsync(TId id)
@@ -149,12 +105,6 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
             var deleted = await Db.KeyDeleteAsync(CreateKeyFromId(id));
             if (!deleted)
                 throw new EntityDeleteFailedException(id);
-        }
-
-        public Task DeleteAsync(IEnumerable<TId> ids)
-        {
-            var tasks = ids.Select(DeleteAsync);
-            return Task.WhenAll(tasks);
         }
 
         protected virtual string CreateKeyFromId(TId id)

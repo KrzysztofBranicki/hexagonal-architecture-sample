@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Common.Domain.Repositories.Exceptions;
 
 namespace Common.Domain.Repositories.InMemory
@@ -18,14 +17,6 @@ namespace Common.Domain.Repositories.InMemory
         {
             _decoratedRepository.Add(entity);
             AddEntityToCache(entity);
-        }
-
-        public void Add(IEnumerable<TEntity> entities)
-        {
-            _decoratedRepository.Add(entities);
-
-            foreach (var entity in entities)
-                AddEntityToCache(entity);
         }
 
         public TEntity Get(TId id)
@@ -53,29 +44,13 @@ namespace Common.Domain.Repositories.InMemory
         public void Update(TEntity entity)
         {
             _decoratedRepository.Update(entity);
-            UpdateEntityInCache(entity);
-        }
-
-        public void Update(IEnumerable<TEntity> entities)
-        {
-            _decoratedRepository.Update(entities);
-
-            foreach (var entity in entities)
-                UpdateEntityInCache(entity);
+            _entitiesCache.TryUpdate(entity.Id, entity, GetEntityFromCache(entity.Id));
         }
 
         public void Delete(TEntity entity)
         {
             _decoratedRepository.Delete(entity);
-            RemoveEntityFromCache(entity);
-        }
-
-        public void Delete(IEnumerable<TEntity> entities)
-        {
-            _decoratedRepository.Delete(entities);
-
-            foreach (var entity in entities)
-                RemoveEntityFromCache(entity);
+            RemoveEntityFromCacheById(entity.Id);
         }
 
         public void Delete(TId id)
@@ -84,38 +59,19 @@ namespace Common.Domain.Repositories.InMemory
             RemoveEntityFromCacheById(id);
         }
 
-        public void Delete(IEnumerable<TId> ids)
-        {
-            _decoratedRepository.Delete(ids);
-
-            foreach (var id in ids)
-                RemoveEntityFromCacheById(id);
-        }
-
-        protected virtual void AddEntityToCache(TEntity entity)
+        private void AddEntityToCache(TEntity entity)
         {
             _entitiesCache.AddOrUpdate(entity.Id, entity, (id, entity1) => entity);
         }
 
-        protected virtual TEntity GetEntityFromCache(TId id)
+        private TEntity GetEntityFromCache(TId id)
         {
             TEntity result;
             _entitiesCache.TryGetValue(id, out result);
             return result;
         }
 
-        protected virtual void UpdateEntityInCache(TEntity entity)
-        {
-            _entitiesCache.TryUpdate(entity.Id, entity, GetEntityFromCache(entity.Id));
-        }
-
-        protected virtual void RemoveEntityFromCache(TEntity entity)
-        {
-            TEntity result;
-            _entitiesCache.TryRemove(entity.Id, out result);
-        }
-
-        protected virtual void RemoveEntityFromCacheById(TId id)
+        private void RemoveEntityFromCacheById(TId id)
         {
             TEntity result;
             _entitiesCache.TryRemove(id, out result);

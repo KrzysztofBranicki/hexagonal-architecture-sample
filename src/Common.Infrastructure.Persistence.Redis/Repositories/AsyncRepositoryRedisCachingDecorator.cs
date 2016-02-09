@@ -1,4 +1,5 @@
-﻿using Common.Domain;
+﻿using System.Threading.Tasks;
+using Common.Domain;
 using Common.Domain.Repositories;
 using Common.Domain.Repositories.Exceptions;
 using Newtonsoft.Json;
@@ -6,40 +7,40 @@ using StackExchange.Redis;
 
 namespace Common.Infrastructure.Persistence.Redis.Repositories
 {
-    public class RepositoryRedisCachingDecorator<TEntity, TId> : IRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class AsyncRepositoryRedisCachingDecorator<TEntity, TId> : IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
         private static readonly string EntityName = typeof(TEntity).FullName;
 
-        private readonly IRepository<TEntity, TId> _decoratedRepository;
+        private readonly IAsyncRepository<TEntity, TId> _decoratedRepository;
         protected IDatabase Db;
 
-        public RepositoryRedisCachingDecorator(IRepository<TEntity, TId> decoratedRepository, ConnectionMultiplexer connectionMultiplexer)
+        public AsyncRepositoryRedisCachingDecorator(IAsyncRepository<TEntity, TId> decoratedRepository, ConnectionMultiplexer connectionMultiplexer)
         {
             _decoratedRepository = decoratedRepository;
             Db = connectionMultiplexer.GetDatabase();
         }
 
-        public void Add(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            _decoratedRepository.Add(entity);
+            await _decoratedRepository.AddAsync(entity);
             AddEntityToCache(entity);
         }
 
-        public TEntity Get(TId id)
+        public async Task<TEntity> GetAsync(TId id)
         {
-            var entity = GetEntityOrDefault(id);
+            var entity = await GetEntityOrDefaultAsync(id);
             if (entity == null)
                 throw new EntityNotFountException(id);
 
             return entity;
         }
 
-        public TEntity GetEntityOrDefault(TId id)
+        public async Task<TEntity> GetEntityOrDefaultAsync(TId id)
         {
             var entity = GetEntityFromCache(id);
             if (entity == null)
             {
-                entity = _decoratedRepository.GetEntityOrDefault(id);
+                entity = await _decoratedRepository.GetEntityOrDefaultAsync(id);
                 if (entity != null)
                     AddEntityToCache(entity);
             }
@@ -47,21 +48,21 @@ namespace Common.Infrastructure.Persistence.Redis.Repositories
             return entity;
         }
 
-        public void Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
-            _decoratedRepository.Update(entity);
+            await _decoratedRepository.UpdateAsync(entity);
             Db.StringSet(CreateKeyFromId(entity.Id), SerializeEntity(entity));
         }
 
-        public void Delete(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
-            _decoratedRepository.Delete(entity);
+            await _decoratedRepository.DeleteAsync(entity);
             RemoveEntityFromCacheById(entity.Id);
         }
 
-        public void Delete(TId id)
+        public async Task DeleteAsync(TId id)
         {
-            _decoratedRepository.Delete(id);
+            await _decoratedRepository.DeleteAsync(id);
             RemoveEntityFromCacheById(id);
         }
 

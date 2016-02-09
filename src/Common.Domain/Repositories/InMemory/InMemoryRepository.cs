@@ -4,58 +4,87 @@ using Common.Domain.Repositories.Exceptions;
 
 namespace Common.Domain.Repositories.InMemory
 {
-    public class InMemoryRepository<TEntity, TId> : BaseRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class InMemoryRepository<TEntity, TId> : IRepository<TEntity, TId>, IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
         private readonly ConcurrentDictionary<TId, TEntity> _entities = new ConcurrentDictionary<TId, TEntity>();
 
-        public override void Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             var added = _entities.TryAdd(entity.Id, entity);
-            if(!added)
+            if (!added)
                 throw new EntityAddFailedException(entity.Id);
         }
 
-        public override TEntity GetEntityOrDefault(TId id)
+        public TEntity Get(TId id)
+        {
+            var entity = GetEntityOrDefault(id);
+            if (entity == null)
+                throw new EntityNotFountException(id);
+
+            return entity;
+        }
+
+        public TEntity GetEntityOrDefault(TId id)
         {
             TEntity result;
             _entities.TryGetValue(id, out result);
             return result;
         }
 
-        public override void Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _entities.TryUpdate(entity.Id, entity, GetEntityOrDefault(entity.Id));
         }
 
-        public override void Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
-            TEntity result;
-            var deleted = _entities.TryRemove(entity.Id, out result);
-            if(!deleted)
-                throw new EntityDeleteFailedException(entity.Id);
+            Delete(entity.Id);
         }
 
-        public override Task AddAsync(TEntity entity)
+        public void Delete(TId id)
+        {
+            TEntity result;
+            var deleted = _entities.TryRemove(id, out result);
+            if (!deleted)
+                throw new EntityDeleteFailedException(id);
+        }
+
+        public Task AddAsync(TEntity entity)
         {
             Add(entity);
             return Task.CompletedTask;
         }
 
-        public override Task<TEntity> GetEntityOrDefaultAsync(TId id)
+        public async Task<TEntity> GetAsync(TId id)
+        {
+            var entity = await GetEntityOrDefaultAsync(id);
+            if (entity == null)
+                throw new EntityNotFountException(id);
+
+            return entity;
+        }
+
+        public Task<TEntity> GetEntityOrDefaultAsync(TId id)
         {
             var entity = GetEntityOrDefault(id);
             return Task.FromResult(entity);
         }
 
-        public override Task UpdateAsync(TEntity entity)
+        public Task UpdateAsync(TEntity entity)
         {
             Update(entity);
             return Task.CompletedTask;
         }
 
-        public override Task DeleteAsync(TEntity entity)
+        public Task DeleteAsync(TEntity entity)
         {
             Delete(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync(TId id)
+        {
+            Delete(id);
             return Task.CompletedTask;
         }
     }
