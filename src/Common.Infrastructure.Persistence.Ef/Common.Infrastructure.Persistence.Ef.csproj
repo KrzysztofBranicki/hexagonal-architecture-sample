@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE03AECF-4265-415D-A6EC-3A3466E5D459}</ProjectGuid>
+    <ProjectGuid>{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common.Domain</RootNamespace>
-    <AssemblyName>Common.Domain</AssemblyName>
+    <RootNamespace>Common.Infrastructure.Persistence.Ef</RootNamespace>
+    <AssemblyName>Common.Infrastructure.Persistence.Ef</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,27 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditData.cs" />
-    <Compile Include="DomainInvariantViolatedException.cs" />
-    <Compile Include="Events\EventBroker.cs" />
-    <Compile Include="Events\IEventHandler.cs" />
-    <Compile Include="Events\IEventPublisher.cs" />
-    <Compile Include="Events\IEventSubscriber.cs" />
-    <Compile Include="IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Exceptions\EntityAddFailedException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityNotFountException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityDeleteFailedException.cs" />
-    <Compile Include="Repositories\Exceptions\EntityUpdateFailedException.cs" />
-    <Compile Include="Repositories\IAsyncRepository.cs" />
-    <Compile Include="Repositories\InMemory\AsyncRepositoryInMemoryCachingDecorator.cs" />
-    <Compile Include="Repositories\InMemory\InMemoryRepository.cs" />
-    <Compile Include="Repositories\InMemory\RepositoryInMemoryCachingDecorator.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\RepositoryExtensions.cs" />
-    <Compile Include="Transactions\ITransactionExecutor.cs" />
+    <Compile Include="Repositories\EntityFrameworkRepository.cs" />
+    <Compile Include="Transactions\DbContextSaveChangesTransactionExecutor.cs" />
+    <Compile Include="Transactions\DbContextTransactionExecutor.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Domain\Common.Domain.csproj">
+      <Project>{ee03aecf-4265-415d-a6ec-3a3466e5d459}</Project>
+      <Name>Common.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
