@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persistence.Ef", "Common.Infrastructure.Persistence.Ef\Common.Infrastructure.Persistence.Ef.csproj", "{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persistence.Redis.Tests", "Common.Infrastructure.Persistence.Redis.Tests\Common.Infrastructure.Persistence.Redis.Tests.csproj", "{E8134D56-3256-4CD5-AE73-B58D949CC4D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{B76B083E-069A-4F1E-8E0A-3B16845DCA17} = {2F2568B0-A15A-4EA1-9DFB-94A6537852B1}
 		{FD3462ED-C068-4EBB-8BC1-428F3980543A} = {45086430-2CEE-433A-9A7A-533B000DED59}
 		{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6} = {45086430-2CEE-433A-9A7A-533B000DED59}
+		{E8134D56-3256-4CD5-AE73-B58D949CC4D6} = {45086430-2CEE-433A-9A7A-533B000DED59}
 	EndGlobalSection
 EndGlobal
