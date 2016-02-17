@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Persistence.Redis.Tests", "Common.Infrastructure.Persistence.Redis.Tests\Common.Infrastructure.Persistence.Redis.Tests.csproj", "{E8134D56-3256-4CD5-AE73-B58D949CC4D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messaging.Redis", "Common.Infrastructure.Messaging.Redis\Common.Infrastructure.Messaging.Redis.csproj", "{A0CD86CB-F40F-410B-B448-B3ED66C62847}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messaging.Redis.Tests", "Common.Infrastructure.Messaging.Redis.Tests\Common.Infrastructure.Messaging.Redis.Tests.csproj", "{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,14 @@ Global
 		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8134D56-3256-4CD5-AE73-B58D949CC4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0CD86CB-F40F-410B-B448-B3ED66C62847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0CD86CB-F40F-410B-B448-B3ED66C62847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0CD86CB-F40F-410B-B448-B3ED66C62847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0CD86CB-F40F-410B-B448-B3ED66C62847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +93,7 @@ Global
 		{FD3462ED-C068-4EBB-8BC1-428F3980543A} = {45086430-2CEE-433A-9A7A-533B000DED59}
 		{441B916F-62E8-4DD9-8857-1BAC9A5BB0C6} = {45086430-2CEE-433A-9A7A-533B000DED59}
 		{E8134D56-3256-4CD5-AE73-B58D949CC4D6} = {45086430-2CEE-433A-9A7A-533B000DED59}
+		{A0CD86CB-F40F-410B-B448-B3ED66C62847} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
+		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
 	EndGlobalSection
 EndGlobal

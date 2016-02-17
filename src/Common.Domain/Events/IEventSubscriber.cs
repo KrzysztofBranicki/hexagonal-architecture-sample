@@ -1,8 +1,8 @@
 ﻿namespace Common.Domain.Events
 {
-    interface IEventSubscriber
+    public interface IEventSubscriber
     {
-        void SubscribeEventHandler(IEventHandler eventHandler);
-        void UnsubscribeEventHandler(IEventHandler eventHandler);
+        void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
+        void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
     }
 }

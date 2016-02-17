@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B7536E35-0AED-47B4-AF80-90E9C0F98560}</ProjectGuid>
+    <ProjectGuid>{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
+    <RootNamespace>Common.Infrastructure.Messaging.Redis.Tests</RootNamespace>
+    <AssemblyName>Common.Infrastructure.Messaging.Redis.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,22 +49,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diagnostics\StopWatchScope.cs" />
-    <Compile Include="Logging\ColorConsoleLogger.cs" />
-    <Compile Include="Logging\CompositeLogger.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Querying\GridSearchCriteria.cs" />
-    <Compile Include="Querying\IPageCriteria.cs" />
-    <Compile Include="Querying\ISortingCriteria.cs" />
-    <Compile Include="Querying\PagingExtensions.cs" />
-    <Compile Include="Querying\ResultPage.cs" />
-    <Compile Include="Validation\DataAnnotationsValidatorAdapter.cs" />
-    <Compile Include="Validation\IValidator.cs" />
-    <Compile Include="Validation\ValidationError.cs" />
-    <Compile Include="Validation\ValidationException.cs" />
-    <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="RedisEventBrokerIntegrationTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Domain.Tests\Common.Domain.Tests.csproj">
+      <Project>{31551c79-a220-41d3-83d2-81214d4a84af}</Project>
+      <Name>Common.Domain.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common.Domain\Common.Domain.csproj">
+      <Project>{ee03aecf-4265-415d-a6ec-3a3466e5d459}</Project>
+      <Name>Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common.Infrastructure.Messaging.Redis\Common.Infrastructure.Messaging.Redis.csproj">
+      <Project>{a0cd86cb-f40f-410b-b448-b3ed66c62847}</Project>
+      <Name>Common.Infrastructure.Messaging.Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{b7536e35-0aed-47b4-af80-90e9c0f98560}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

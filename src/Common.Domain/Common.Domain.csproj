@@ -43,7 +43,8 @@
   <ItemGroup>
     <Compile Include="AuditData.cs" />
     <Compile Include="DomainInvariantViolatedException.cs" />
-    <Compile Include="Events\EventBroker.cs" />
+    <Compile Include="Events\SimpleInProcEventBroker.cs" />
+    <Compile Include="Events\IEventBroker.cs" />
     <Compile Include="Events\IEventHandler.cs" />
     <Compile Include="Events\IEventPublisher.cs" />
     <Compile Include="Events\IEventSubscriber.cs" />
