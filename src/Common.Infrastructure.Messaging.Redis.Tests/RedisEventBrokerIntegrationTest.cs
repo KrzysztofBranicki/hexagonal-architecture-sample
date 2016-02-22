@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using Common.Domain.Events;
 using Common.Domain.Tests.Events;
 using Common.Logging;
@@ -21,7 +22,7 @@ namespace Common.Infrastructure.Messaging.Redis.Tests
         protected override IEventBroker GetEventBroker()
         {
             _connectionMultiplexer.GetSubscriber().UnsubscribeAll();
-            return new EventBrokerDelayAfterPublishDecorator(new RedisEventBroker(_connectionMultiplexer, NullLogger.Instance));
+            return new EventBrokerDelayAfterPublishDecorator(new RedisEventBroker(_connectionMultiplexer, NullLogger.Instance), TimeSpan.FromSeconds(0.5));
         }
     }
 }

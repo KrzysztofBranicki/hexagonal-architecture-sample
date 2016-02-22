@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using Common.Domain.Events;
 using Common.Logging;
 using Newtonsoft.Json;
@@ -13,15 +12,15 @@ namespace Common.Infrastructure.Messaging.Redis
     {
         private readonly ConnectionMultiplexer _connectionMultiplexer;
         private readonly ILogger _logger;
-        private readonly bool _onlyLogHandlerExceptionsWithoutRethrowing;
+        private readonly bool _rethrowEventHandlerExceptions;
 
         private readonly ConcurrentDictionary<string, EventHandlersCollection> _handlersForChannel = new ConcurrentDictionary<string, EventHandlersCollection>();
 
-        public RedisEventBroker(ConnectionMultiplexer connectionMultiplexer, ILogger logger, bool onlyLogHandlerExceptionsWithoutRethrowing = false)
+        public RedisEventBroker(ConnectionMultiplexer connectionMultiplexer, ILogger logger, bool rethrowEventHandlerExceptions = false)
         {
             _connectionMultiplexer = connectionMultiplexer;
             _logger = logger;
-            _onlyLogHandlerExceptionsWithoutRethrowing = onlyLogHandlerExceptionsWithoutRethrowing;
+            _rethrowEventHandlerExceptions = rethrowEventHandlerExceptions;
         }
 
         public void Publish<T>(T eventObject) where T : class
@@ -34,8 +33,7 @@ namespace Common.Infrastructure.Messaging.Redis
 
         public void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            var handledEventTypes = GetEventTypesThatEventHandlerHandles(eventHandler);
-            foreach (var handledEventType in handledEventTypes)
+            foreach (var handledEventType in eventHandler.GetHandledEventTypes())
             {
                 var channel = GetChannelNameForEventType(handledEventType);
 
@@ -66,7 +64,7 @@ namespace Common.Infrastructure.Messaging.Redis
                                 catch (Exception e)
                                 {
                                     _logger.Error(e);
-                                    if (!_onlyLogHandlerExceptionsWithoutRethrowing)
+                                    if (_rethrowEventHandlerExceptions)
                                         throw;
                                 }
                             }
@@ -79,8 +77,7 @@ namespace Common.Infrastructure.Messaging.Redis
 
         public void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            var handledEventTypes = GetEventTypesThatEventHandlerHandles(eventHandler);
-            foreach (var handledEventType in handledEventTypes)
+            foreach (var handledEventType in eventHandler.GetHandledEventTypes())
             {
                 var channel = GetChannelNameForEventType(handledEventType);
 
@@ -90,18 +87,6 @@ namespace Common.Infrastructure.Messaging.Redis
                     registeredHandlers.RemoveEventHandler(eventHandler);
                 }
             }
-        }
-
-        private IEnumerable<Type> GetEventTypesThatEventHandlerHandles<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
-        {
-            var eventHandlerType = eventHandler.GetType();
-
-            var handledEventNames = eventHandlerType
-                .GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEventHandler<>))
-                .Select(x => x.GetGenericArguments().Single())
-                .ToList();
-            return handledEventNames;
         }
 
         protected virtual string GetChannelNameForEventType(Type eventType)

@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messaging.Redis.Tests", "Common.Infrastructure.Messaging.Redis.Tests\Common.Infrastructure.Messaging.Redis.Tests.csproj", "{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messaging.AzureServiceBus.Tests", "Common.Infrastructure.Messaging.AzureServiceBus.Tests\Common.Infrastructure.Messaging.AzureServiceBus.Tests.csproj", "{C424CC41-873E-4625-9526-BF75E42F977B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Messaging.AzureServiceBus", "Common.Infrastructure.Messaging.AzureServiceBus\Common.Infrastructure.Messaging.AzureServiceBus.csproj", "{D6A92746-9C46-4E7A-893E-2C25A6209B8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C424CC41-873E-4625-9526-BF75E42F977B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C424CC41-873E-4625-9526-BF75E42F977B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C424CC41-873E-4625-9526-BF75E42F977B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C424CC41-873E-4625-9526-BF75E42F977B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A92746-9C46-4E7A-893E-2C25A6209B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A92746-9C46-4E7A-893E-2C25A6209B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A92746-9C46-4E7A-893E-2C25A6209B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A92746-9C46-4E7A-893E-2C25A6209B8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +107,7 @@ Global
 		{E8134D56-3256-4CD5-AE73-B58D949CC4D6} = {45086430-2CEE-433A-9A7A-533B000DED59}
 		{A0CD86CB-F40F-410B-B448-B3ED66C62847} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
 		{D181B95E-6B0A-4392-A1B5-E9C8E9CA75C1} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
+		{C424CC41-873E-4625-9526-BF75E42F977B} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
+		{D6A92746-9C46-4E7A-893E-2C25A6209B8A} = {B76B083E-069A-4F1E-8E0A-3B16845DCA17}
 	EndGlobalSection
 EndGlobal
