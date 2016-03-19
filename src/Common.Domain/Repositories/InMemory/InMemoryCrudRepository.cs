@@ -1,25 +1,18 @@
-using System.Data.Entity;
+﻿using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Common.Domain;
-using Common.Domain.Repositories;
 using Common.Domain.Repositories.Exceptions;
 
-namespace Common.Infrastructure.Persistence.Ef.Repositories
+namespace Common.Domain.Repositories.InMemory
 {
-    public class EntityFrameworkRepository<TEntity, TId> : IRepository<TEntity, TId>, IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class InMemoryCrudRepository<TEntity, TId> : ICrudRepository<TEntity, TId>, IAsyncCrudRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
-        protected readonly DbContext DbContext;
-        protected readonly DbSet<TEntity> DbSet;
-
-        public EntityFrameworkRepository(DbContext dbContext)
-        {
-            DbContext = dbContext;
-            DbSet = DbContext.Set<TEntity>();
-        }
+        private readonly ConcurrentDictionary<TId, TEntity> _entities = new ConcurrentDictionary<TId, TEntity>();
 
         public void Add(TEntity entity)
         {
-            DbSet.Add(entity);
+            var added = _entities.TryAdd(entity.Id, entity);
+            if (!added)
+                throw new EntityAddFailedException(entity.Id);
         }
 
         public TEntity Get(TId id)
@@ -33,24 +26,27 @@ namespace Common.Infrastructure.Persistence.Ef.Repositories
 
         public TEntity GetEntityOrDefault(TId id)
         {
-            return DbSet.Find(id);
+            TEntity result;
+            _entities.TryGetValue(id, out result);
+            return result;
         }
 
         public void Update(TEntity entity)
         {
-            //In case entity is not tracked by EF (it doesnt come from DbContext but instead from some sort of cache like Redis) we need to explicitly tell EF about it
-            DbContext.Entry(entity).State = EntityState.Modified;
+            _entities.TryUpdate(entity.Id, entity, GetEntityOrDefault(entity.Id));
         }
 
         public void Delete(TEntity entity)
         {
-            DbSet.Attach(entity);//in case it's not already attached
-            DbSet.Remove(entity);
+            Delete(entity.Id);
         }
 
         public void Delete(TId id)
         {
-            DbSet.Remove(Get(id));
+            TEntity result;
+            var deleted = _entities.TryRemove(id, out result);
+            if (!deleted)
+                throw new EntityDeleteFailedException(id);
         }
 
         public Task AddAsync(TEntity entity)
@@ -70,7 +66,8 @@ namespace Common.Infrastructure.Persistence.Ef.Repositories
 
         public Task<TEntity> GetEntityOrDefaultAsync(TId id)
         {
-            return DbSet.FindAsync(id);
+            var entity = GetEntityOrDefault(id);
+            return Task.FromResult(entity);
         }
 
         public Task UpdateAsync(TEntity entity)
@@ -85,9 +82,10 @@ namespace Common.Infrastructure.Persistence.Ef.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task DeleteAsync(TId id)
+        public Task DeleteAsync(TId id)
         {
-            Delete(await GetAsync(id));
+            Delete(id);
+            return Task.CompletedTask;
         }
     }
 }

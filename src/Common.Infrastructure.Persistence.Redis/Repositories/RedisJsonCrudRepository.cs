@@ -7,13 +7,13 @@ using StackExchange.Redis;
 
 namespace Common.Infrastructure.Persistence.Redis.Repositories
 {
-    public class RedisJsonRepository<TEntity, TId> : IRepository<TEntity, TId>, IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class RedisJsonCrudRepository<TEntity, TId> : ICrudRepository<TEntity, TId>, IAsyncCrudRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
         private static readonly string EntityName = typeof(TEntity).FullName;
 
         protected IDatabase Db;
 
-        public RedisJsonRepository(ConnectionMultiplexer connectionMultiplexer)
+        public RedisJsonCrudRepository(ConnectionMultiplexer connectionMultiplexer)
         {
             Db = connectionMultiplexer.GetDatabase();
         }

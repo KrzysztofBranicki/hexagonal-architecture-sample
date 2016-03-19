@@ -53,8 +53,8 @@
     <Compile Include="Events\GenericEventBrokerTest.cs" />
     <Compile Include="Events\SimpleInProcEventBrokerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\GenericRepositoryTest.cs" />
-    <Compile Include="Repositories\InMemoryRepositoryTest.cs" />
+    <Compile Include="Repositories\GenericCrudRepositoryTest.cs" />
+    <Compile Include="Repositories\InMemoryCrudRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

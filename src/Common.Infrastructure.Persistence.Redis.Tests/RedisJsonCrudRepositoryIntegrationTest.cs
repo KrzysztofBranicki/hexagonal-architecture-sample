@@ -9,7 +9,7 @@ using StackExchange.Redis;
 namespace Common.Infrastructure.Persistence.Redis.Tests
 {
     [TestFixture]
-    public class RedisJsonRepositoryIntegrationTest : GenericRepositoryTest
+    public class RedisJsonCrudRepositoryIntegrationTest : GenericCrudRepositoryTest
     {
         private string _redisServerAddress;
         private ConnectionMultiplexer _connectionMultiplexer;
@@ -21,10 +21,10 @@ namespace Common.Infrastructure.Persistence.Redis.Tests
             _connectionMultiplexer = ConnectionMultiplexer.Connect(_redisServerAddress + ",allowAdmin=true");
         }
 
-        protected override IRepository<TestEntity, Guid> CreateRepository()
+        protected override ICrudRepository<TestEntity, Guid> CreateRepository()
         {
             _connectionMultiplexer.GetServer(_redisServerAddress).FlushDatabase();
-            return new RedisJsonRepository<TestEntity, Guid>(_connectionMultiplexer);
+            return new RedisJsonCrudRepository<TestEntity, Guid>(_connectionMultiplexer);
         }
     }
 }

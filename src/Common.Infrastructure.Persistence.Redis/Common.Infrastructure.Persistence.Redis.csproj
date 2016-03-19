@@ -49,9 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AsyncRepositoryRedisCachingDecorator.cs" />
-    <Compile Include="Repositories\RedisJsonRepository.cs" />
-    <Compile Include="Repositories\RepositoryRedisCachingDecorator.cs" />
+    <Compile Include="Repositories\AsyncCrudRepositoryRedisCachingDecorator.cs" />
+    <Compile Include="Repositories\RedisJsonCrudRepository.cs" />
+    <Compile Include="Repositories\CrudRepositoryRedisCachingDecorator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -57,12 +57,12 @@
     <Compile Include="Repositories\Exceptions\EntityNotFountException.cs" />
     <Compile Include="Repositories\Exceptions\EntityDeleteFailedException.cs" />
     <Compile Include="Repositories\Exceptions\EntityUpdateFailedException.cs" />
-    <Compile Include="Repositories\IAsyncRepository.cs" />
-    <Compile Include="Repositories\InMemory\AsyncRepositoryInMemoryCachingDecorator.cs" />
-    <Compile Include="Repositories\InMemory\InMemoryRepository.cs" />
-    <Compile Include="Repositories\InMemory\RepositoryInMemoryCachingDecorator.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\RepositoryExtensions.cs" />
+    <Compile Include="Repositories\IAsyncCrudRepository.cs" />
+    <Compile Include="Repositories\InMemory\AsyncCrudRepositoryInMemoryCachingDecorator.cs" />
+    <Compile Include="Repositories\InMemory\InMemoryCrudRepository.cs" />
+    <Compile Include="Repositories\InMemory\CrudRepositoryInMemoryCachingDecorator.cs" />
+    <Compile Include="Repositories\ICrudRepository.cs" />
+    <Compile Include="Repositories\CrudRepositoryExtensions.cs" />
     <Compile Include="Transactions\ITransactionExecutor.cs" />
   </ItemGroup>
   <ItemGroup>

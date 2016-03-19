@@ -4,12 +4,12 @@ using Common.Domain.Repositories.Exceptions;
 
 namespace Common.Domain.Repositories.InMemory
 {
-    public class AsyncRepositoryInMemoryCachingDecorator<TEntity, TId> : IAsyncRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class AsyncCrudRepositoryInMemoryCachingDecorator<TEntity, TId> : IAsyncCrudRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
-        private readonly IAsyncRepository<TEntity, TId> _decoratedRepository;
+        private readonly IAsyncCrudRepository<TEntity, TId> _decoratedRepository;
         private readonly ConcurrentDictionary<TId, TEntity> _entitiesCache = new ConcurrentDictionary<TId, TEntity>();
 
-        public AsyncRepositoryInMemoryCachingDecorator(IAsyncRepository<TEntity, TId> decoratedRepository)
+        public AsyncCrudRepositoryInMemoryCachingDecorator(IAsyncCrudRepository<TEntity, TId> decoratedRepository)
         {
             _decoratedRepository = decoratedRepository;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Common.Domain.Repositories
 {
-    public interface IRepository<TEntity, in TId> where TEntity : IEntity<TId>
+    public interface ICrudRepository<TEntity, in TId> where TEntity : IEntity<TId>
     {
         void Add(TEntity entity);
 

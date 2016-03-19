@@ -6,14 +6,14 @@ using StackExchange.Redis;
 
 namespace Common.Infrastructure.Persistence.Redis.Repositories
 {
-    public class RepositoryRedisCachingDecorator<TEntity, TId> : IRepository<TEntity, TId> where TEntity : class, IEntity<TId>
+    public class CrudRepositoryRedisCachingDecorator<TEntity, TId> : ICrudRepository<TEntity, TId> where TEntity : class, IEntity<TId>
     {
         private static readonly string EntityName = typeof(TEntity).FullName;
 
-        private readonly IRepository<TEntity, TId> _decoratedRepository;
+        private readonly ICrudRepository<TEntity, TId> _decoratedRepository;
         protected IDatabase Db;
 
-        public RepositoryRedisCachingDecorator(IRepository<TEntity, TId> decoratedRepository, ConnectionMultiplexer connectionMultiplexer)
+        public CrudRepositoryRedisCachingDecorator(ICrudRepository<TEntity, TId> decoratedRepository, ConnectionMultiplexer connectionMultiplexer)
         {
             _decoratedRepository = decoratedRepository;
             Db = connectionMultiplexer.GetDatabase();

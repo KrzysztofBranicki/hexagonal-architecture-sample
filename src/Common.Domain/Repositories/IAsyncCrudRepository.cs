@@ -2,7 +2,7 @@
 
 namespace Common.Domain.Repositories
 {
-    public interface IAsyncRepository<TEntity, in TId> where TEntity : IEntity<TId>
+    public interface IAsyncCrudRepository<TEntity, in TId> where TEntity : IEntity<TId>
     {
         Task AddAsync(TEntity entity);
 

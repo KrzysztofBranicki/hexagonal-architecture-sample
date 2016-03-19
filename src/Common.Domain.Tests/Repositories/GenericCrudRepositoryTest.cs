@@ -5,9 +5,9 @@ using NUnit.Framework;
 
 namespace Common.Domain.Tests.Repositories
 {
-    public abstract class GenericRepositoryTest
+    public abstract class GenericCrudRepositoryTest
     {
-        protected abstract IRepository<TestEntity, Guid> CreateRepository();
+        protected abstract ICrudRepository<TestEntity, Guid> CreateRepository();
 
         [Test]
         public void Get_should_throw_entity_not_found_exception_when_thers_no_entity_with_specified_id()
