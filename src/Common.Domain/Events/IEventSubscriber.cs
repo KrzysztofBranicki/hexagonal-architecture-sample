@@ -2,7 +2,8 @@
 {
     public interface IEventSubscriber
     {
-        void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
-        void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
+        void SubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
+        void UnsubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class;
+        void SubscribeHandlerType<TEventHandler>() where TEventHandler : IEventHandler;
     }
 }

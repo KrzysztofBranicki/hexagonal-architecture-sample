@@ -19,7 +19,7 @@ namespace Common.Infrastructure.Messaging.Redis.Tests
             _connectionMultiplexer = ConnectionMultiplexer.Connect(ConfigurationManager.AppSettings["RedisServerAddress"]);
         }
 
-        protected override IEventBroker GetEventBroker()
+        protected override IEventBroker GetEventBroker(Func<Type, object> handlerInstanceCreator = null)
         {
             _connectionMultiplexer.GetSubscriber().UnsubscribeAll();
             return new EventBrokerDelayAfterPublishDecorator(new RedisEventBroker(_connectionMultiplexer, NullLogger.Instance), TimeSpan.FromSeconds(0.5));

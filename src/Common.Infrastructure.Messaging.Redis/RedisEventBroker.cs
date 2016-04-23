@@ -31,9 +31,9 @@ namespace Common.Infrastructure.Messaging.Redis
             _connectionMultiplexer.GetSubscriber().Publish(channel, message);
         }
 
-        public void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void SubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            foreach (var handledEventType in eventHandler.GetHandledEventTypes())
+            foreach (var handledEventType in eventHandler.GetEventTypesWhichHandlerSupports())
             {
                 var channel = GetChannelNameForEventType(handledEventType);
 
@@ -75,9 +75,9 @@ namespace Common.Infrastructure.Messaging.Redis
             }
         }
 
-        public void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void UnsubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            foreach (var handledEventType in eventHandler.GetHandledEventTypes())
+            foreach (var handledEventType in eventHandler.GetEventTypesWhichHandlerSupports())
             {
                 var channel = GetChannelNameForEventType(handledEventType);
 
@@ -87,6 +87,11 @@ namespace Common.Infrastructure.Messaging.Redis
                     registeredHandlers.RemoveEventHandler(eventHandler);
                 }
             }
+        }
+
+        public void SubscribeHandlerType<TEventHandler>() where TEventHandler : IEventHandler
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual string GetChannelNameForEventType(Type eventType)

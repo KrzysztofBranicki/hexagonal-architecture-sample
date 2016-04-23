@@ -1,6 +1,9 @@
 ﻿namespace Common.Domain.Events
 {
-    public interface IEventHandler<in TEvent> where TEvent : class
+    public interface IEventHandler
+    { }
+
+    public interface IEventHandler<in TEvent> : IEventHandler where TEvent : class
     {
         void Handle(TEvent eventData);
     }
