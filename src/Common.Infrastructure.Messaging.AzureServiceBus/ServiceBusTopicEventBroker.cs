@@ -32,12 +32,12 @@ namespace Common.Infrastructure.Messaging.AzureServiceBus
             topicClient.Send(new BrokeredMessage(SerializeEventObject(eventObject)));
         }
 
-        public void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void SubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
             var subscriptionClients = new List<SubscriptionClient>();
             if (_subscriptionClientsForEventHandler.TryAdd(eventHandler, subscriptionClients))
             {
-                foreach (var handledEventType in eventHandler.GetHandledEventTypes())
+                foreach (var handledEventType in eventHandler.GetEventTypesWhichHandlerSupports())
                 {
                     string topicName = GetTopicNameForEventType(handledEventType);
                     var subscriptionName = GetSubscriptionNameForEventHandler(eventHandler);
@@ -75,13 +75,13 @@ namespace Common.Infrastructure.Messaging.AzureServiceBus
             }
         }
 
-        public void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void UnsubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
             List<SubscriptionClient> subscriptionClients;
             if (_subscriptionClientsForEventHandler.TryRemove(eventHandler, out subscriptionClients))
             {
                 var namespaceManager = NamespaceManager.CreateFromConnectionString(_connectionString);
-                foreach (var handledEventType in eventHandler.GetHandledEventTypes())
+                foreach (var handledEventType in eventHandler.GetEventTypesWhichHandlerSupports())
                 {
                     string topicName = GetTopicNameForEventType(handledEventType);
                     var subscriptionName = GetSubscriptionNameForEventHandler(eventHandler);
@@ -89,6 +89,11 @@ namespace Common.Infrastructure.Messaging.AzureServiceBus
                     namespaceManager.DeleteSubscription(topicName, subscriptionName);
                 }
             }
+        }
+
+        public void SubscribeHandlerType<TEventHandler>() where TEventHandler : IEventHandler
+        {
+            throw new NotImplementedException();
         }
 
         private void CreateTopicIfNotExists(string topicName)

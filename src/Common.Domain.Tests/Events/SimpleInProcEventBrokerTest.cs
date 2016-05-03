@@ -8,9 +8,9 @@ namespace Common.Domain.Tests.Events
     [TestFixture]
     public class SimpleInProcEventBrokerTest : GenericEventBrokerTest
     {
-        protected override IEventBroker GetEventBroker()
+        protected override IEventBroker GetEventBroker(Func<Type, object> handlerInstanceCreator = null)
         {
-            return new SimpleInProcEventBroker();
+            return new SimpleInProcEventBroker(handlerInstanceCreator);
         }
 
         [Test]
@@ -18,7 +18,7 @@ namespace Common.Domain.Tests.Events
         {
             var eventBroker = GetEventBroker();
             var eventHandlerForBaseEvent = Substitute.For<IEventHandler<BaseTestEvent>>();
-            eventBroker.SubscribeEventHandler(eventHandlerForBaseEvent);
+            eventBroker.SubscribeHandlerInstance(eventHandlerForBaseEvent);
 
             var baseEvent = new BaseTestEvent(Guid.NewGuid());
             var eventA = new EventA(Guid.NewGuid());

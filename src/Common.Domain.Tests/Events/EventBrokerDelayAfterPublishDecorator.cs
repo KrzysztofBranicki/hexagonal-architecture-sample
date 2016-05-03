@@ -23,14 +23,19 @@ namespace Common.Domain.Tests.Events
             Thread.Sleep(_delayTimeSpan);
         }
 
-        public void SubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void SubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            _decoratedEventBrokek.SubscribeEventHandler(eventHandler);
+            _decoratedEventBrokek.SubscribeHandlerInstance(eventHandler);
         }
 
-        public void UnsubscribeEventHandler<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
+        public void UnsubscribeHandlerInstance<TEvent>(IEventHandler<TEvent> eventHandler) where TEvent : class
         {
-            _decoratedEventBrokek.UnsubscribeEventHandler(eventHandler);
+            _decoratedEventBrokek.UnsubscribeHandlerInstance(eventHandler);
+        }
+
+        public void SubscribeHandlerType<TEventHandler>() where TEventHandler : IEventHandler
+        {
+            _decoratedEventBrokek.SubscribeHandlerType<TEventHandler>();
         }
     }
 }

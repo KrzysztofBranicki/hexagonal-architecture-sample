@@ -22,7 +22,7 @@ namespace Common.Infrastructure.Messaging.AzureServiceBus.Tests
             DeleteAllTopics();
         }
 
-        protected override IEventBroker GetEventBroker()
+        protected override IEventBroker GetEventBroker(Func<Type, object> handlerInstanceCreator = null)
         {
             return new EventBrokerDelayAfterPublishDecorator(new ObjectInstanceTopicNamingServiceBusTopicEventBroker(_connectionString), TimeSpan.FromSeconds(3));
         }
