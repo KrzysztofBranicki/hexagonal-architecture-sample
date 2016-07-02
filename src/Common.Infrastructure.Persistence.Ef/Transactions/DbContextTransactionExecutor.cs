@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Common.Domain.Transactions;
+using System.Collections.Generic;
 
 namespace Common.Infrastructure.Persistence.Ef.Transactions
 {
@@ -12,6 +13,9 @@ namespace Common.Infrastructure.Persistence.Ef.Transactions
     public class DbContextTransactionExecutor : ITransactionExecutor
     {
         private readonly DbContext _dbContext;
+
+        private readonly List<Action> _postCommitActions = new List<Action>();
+        private readonly List<Func<Task>> _postCommitAsyncActions = new List<Func<Task>>();
 
         public DbContextTransactionExecutor(DbContext dbContext)
         {
@@ -40,7 +44,20 @@ namespace Common.Infrastructure.Persistence.Ef.Transactions
                         transaction.Rollback();
                         throw;
                     }
+                    ExecutePostCommitActions();
                 }
+            }
+        }
+
+        public void EnlistActionToExecuteAfterSuccessfulCommit(Action action)
+        {
+            if (WeAreAlreadyRunningInsideTransaction())
+            {
+                _postCommitActions.Add(action);
+            }
+            else
+            {
+                action();
             }
         }
 
@@ -66,13 +83,42 @@ namespace Common.Infrastructure.Persistence.Ef.Transactions
                         transaction.Rollback();
                         throw;
                     }
+                    await ExecutePostCommitActionsAsync();
                 }
             }
         }
 
-        public bool WeAreAlreadyRunningInsideTransaction()
+        public async Task EnlistActionToExecuteAfterSuccessfulCommitAsync(Func<Task> asyncAction)
+        {
+            if (WeAreAlreadyRunningInsideTransaction())
+            {
+                _postCommitAsyncActions.Add(asyncAction);
+            }
+            else
+            {
+                await asyncAction();
+            }
+        }
+
+        private bool WeAreAlreadyRunningInsideTransaction()
         {
             return _dbContext.Database.CurrentTransaction != null;
+        }
+
+        private void ExecutePostCommitActions()
+        {
+            foreach (var action in _postCommitActions)
+            {
+                action();
+            }
+        }
+
+        private async Task ExecutePostCommitActionsAsync()
+        {
+            foreach (var asyncAction in _postCommitAsyncActions)
+            {
+                await asyncAction();
+            }
         }
     }
 }
