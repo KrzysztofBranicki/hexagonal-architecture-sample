@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querying\PagingExtensionsTest.cs" />
     <Compile Include="Querying\ResultPageTest.cs" />
+    <Compile Include="TransientExceptionHandling\RetryerTest.cs" />
     <Compile Include="Validation\ClassToValidate.cs" />
     <Compile Include="Validation\DataAnnotationsValidatorAdapterTest.cs" />
   </ItemGroup>
